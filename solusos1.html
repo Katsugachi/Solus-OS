@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solus OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=Geist:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+/* ─── THEME VARIABLES ─── */
+:root {
+  /* Default: Dark Blue */
+  --bg-primary:   #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary:  #21262d;
+  --bg-glass:     rgba(22,27,34,0.92);
+  --bg-overlay:   rgba(0,0,0,0.55);
+  --accent:       #58a6ff;
+  --accent2:      #1f6feb;
+  --accent-glow:  rgba(88,166,255,0.25);
+  --accent-text:  #58a6ff;
+  --text-1:       #e6edf3;
+  --text-2:       #8b949e;
+  --text-3:       #484f58;
+  --border:       rgba(255,255,255,0.08);
+  --border-focus: rgba(88,166,255,0.5);
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.5);
+  --shadow-md:    0 8px 32px rgba(0,0,0,0.6);
+  --shadow-lg:    0 24px 80px rgba(0,0,0,0.8);
+  --radius:       10px;
+  --taskbar-h:    48px;
+  --font-ui:      'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --wallpaper:    radial-gradient(ellipse at 20% 80%, rgba(30,70,120,0.4) 0%,transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(88,40,140,0.3) 0%,transparent 55%), linear-gradient(160deg,#0a0e1a 0%,#0d1117 50%,#0a0d16 100%);
+  --win-chrome:   rgba(13,17,23,0.98);
+  --win-titlebar: rgba(22,27,34,0.99);
+  --titlebar-h:   36px;
+}
+
+/* ─── FONT THEMES ─── */
+.font-inter    { --font-ui: 'Inter', system-ui, sans-serif; }
+.font-space    { --font-ui: 'Space Grotesk', sans-serif; }
+.font-ibm      { --font-ui: 'IBM Plex Sans', sans-serif; }
+.font-outfit   { --font-ui: 'Outfit', sans-serif; }
+.font-geist    { --font-ui: 'Geist', system-ui, sans-serif; }
+
+/* ─── COLOR THEMES ─── */
+.theme-blue   { --accent:#58a6ff;--accent2:#1f6feb;--accent-glow:rgba(88,166,255,0.22);--accent-text:#58a6ff;--wallpaper:radial-gradient(ellipse at 20% 80%,rgba(30,70,120,0.4) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(88,40,140,0.3) 0%,transparent 55%),linear-gradient(160deg,#0a0e1a 0%,#0d1117 50%,#0a0d16 100%); }
+.theme-purple { --accent:#a78bfa;--accent2:#7c3aed;--accent-glow:rgba(167,139,250,0.22);--accent-text:#a78bfa;--bg-primary:#0d0b14;--bg-secondary:#13111e;--bg-tertiary:#1c1929;--win-chrome:rgba(13,11,20,0.98);--win-titlebar:rgba(19,17,30,0.99);--wallpaper:radial-gradient(ellipse at 20% 70%,rgba(100,40,180,0.4) 0%,transparent 60%),radial-gradient(ellipse at 75% 25%,rgba(60,20,120,0.35) 0%,transparent 55%),linear-gradient(160deg,#0a0812 0%,#0d0b14 50%,#080610 100%); }
+.theme-green  { --accent:#3fb950;--accent2:#238636;--accent-glow:rgba(63,185,80,0.2);--accent-text:#3fb950;--bg-primary:#0b1410;--bg-secondary:#10191a;--bg-tertiary:#182420;--win-chrome:rgba(11,20,16,0.98);--win-titlebar:rgba(16,25,26,0.99);--wallpaper:radial-gradient(ellipse at 15% 80%,rgba(20,80,40,0.45) 0%,transparent 60%),radial-gradient(ellipse at 80% 25%,rgba(10,60,30,0.3) 0%,transparent 55%),linear-gradient(160deg,#070e0a 0%,#0b1410 50%,#080f0b 100%); }
+.theme-rose   { --accent:#f778a1;--accent2:#e4316e;--accent-glow:rgba(247,120,161,0.22);--accent-text:#f778a1;--bg-primary:#150b11;--bg-secondary:#1e1019;--bg-tertiary:#281422;--win-chrome:rgba(21,11,17,0.98);--win-titlebar:rgba(30,16,25,0.99);--wallpaper:radial-gradient(ellipse at 20% 75%,rgba(120,20,60,0.4) 0%,transparent 60%),radial-gradient(ellipse at 75% 25%,rgba(80,10,50,0.35) 0%,transparent 55%),linear-gradient(160deg,#100810 0%,#150b11 50%,#120a0f 100%); }
+.theme-amber  { --accent:#f0a84f;--accent2:#d97706;--accent-glow:rgba(240,168,79,0.22);--accent-text:#f0a84f;--bg-primary:#130f08;--bg-secondary:#1c1610;--bg-tertiary:#261e12;--win-chrome:rgba(19,15,8,0.98);--win-titlebar:rgba(28,22,16,0.99);--wallpaper:radial-gradient(ellipse at 20% 80%,rgba(100,60,10,0.4) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(120,50,5,0.3) 0%,transparent 55%),linear-gradient(160deg,#0e0b05 0%,#130f08 50%,#100d06 100%); }
+.theme-light  { --bg-primary:#f6f8fa;--bg-secondary:#ffffff;--bg-tertiary:#f0f2f5;--bg-glass:rgba(255,255,255,0.92);--bg-overlay:rgba(0,0,0,0.3);--accent:#0969da;--accent2:#0550ae;--accent-glow:rgba(9,105,218,0.15);--accent-text:#0969da;--text-1:#1f2328;--text-2:#57606a;--text-3:#adb5bd;--border:rgba(0,0,0,0.1);--win-chrome:rgba(255,255,255,0.98);--win-titlebar:rgba(246,248,250,0.99);--shadow-sm:0 1px 3px rgba(0,0,0,0.1);--shadow-md:0 8px 32px rgba(0,0,0,0.15);--shadow-lg:0 24px 80px rgba(0,0,0,0.2);--wallpaper:radial-gradient(ellipse at 20% 80%,rgba(9,105,218,0.1) 0%,transparent 60%),linear-gradient(160deg,#edf2fb 0%,#f6f8fa 100%); }
+
+html,body { width:100%;height:100%;overflow:hidden;font-family:var(--font-ui);background:var(--bg-primary); }
+
+/* ─── DESKTOP ─── */
+#desktop {
+  width:100%;height:100%;
+  background:var(--wallpaper);
+  position:relative;overflow:hidden;
+  user-select:none;
+}
+
+/* ─── DESKTOP ICONS ─── */
+#desktop-icons {
+  position:absolute;top:16px;left:16px;
+  display:flex;flex-direction:column;gap:6px;
+  z-index:10;
+}
+.desk-icon {
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:10px 8px 8px;border-radius:12px;cursor:pointer;
+  transition:background 0.15s;width:76px;color:var(--text-1);
+}
+.desk-icon:hover  { background:rgba(255,255,255,0.1); }
+.desk-icon:active { background:rgba(255,255,255,0.18); }
+.desk-icon .di-icon { width:40px;height:40px;display:flex;align-items:center;justify-content:center; }
+.desk-icon .di-label { font-size:11px;text-align:center;word-break:break-word;
+  text-shadow:0 1px 4px rgba(0,0,0,0.7);line-height:1.3;color:var(--text-1); }
+
+/* ─── TASKBAR ─── */
+#taskbar {
+  position:absolute;bottom:0;left:0;right:0;height:var(--taskbar-h);
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(24px) saturate(1.4);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;padding:0 8px;gap:4px;z-index:9999;
+}
+#start-btn {
+  width:36px;height:36px;border-radius:8px;border:none;
+  background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.15s;flex-shrink:0;
+}
+#start-btn:hover { background:rgba(255,255,255,0.1); }
+.tb-sep { width:1px;height:26px;background:var(--border);margin:0 4px;flex-shrink:0; }
+#taskbar-apps { display:flex;gap:3px;align-items:center;flex:1;overflow:hidden; }
+.tb-btn {
+  height:36px;padding:0 10px;border-radius:8px;border:none;
+  background:transparent;cursor:pointer;
+  display:flex;align-items:center;gap:7px;
+  font-size:12px;font-weight:500;color:var(--text-2);
+  font-family:var(--font-ui);transition:all 0.15s;
+  white-space:nowrap;max-width:150px;position:relative;flex-shrink:0;
+}
+.tb-btn:hover { background:rgba(255,255,255,0.08);color:var(--text-1); }
+.tb-btn.active { background:rgba(255,255,255,0.1);color:var(--text-1); }
+.tb-btn.active::after {
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:16px;height:2px;background:var(--accent);border-radius:2px 2px 0 0;
+}
+.tb-btn .tb-ico { width:16px;height:16px;flex-shrink:0; }
+.tb-btn-label { overflow:hidden;text-overflow:ellipsis;max-width:90px; }
+#tb-right { display:flex;align-items:center;gap:4px;margin-left:auto;flex-shrink:0; }
+#tb-sys-icons { display:flex;align-items:center;gap:2px; }
+.tb-sys-btn {
+  width:32px;height:32px;border-radius:6px;border:none;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background 0.15s;
+}
+.tb-sys-btn:hover { background:rgba(255,255,255,0.08); }
+#tb-clock {
+  padding:0 10px;display:flex;flex-direction:column;align-items:flex-end;
+  gap:1px;cursor:default;
+}
+#tb-clock .tc-time { font-size:13px;font-weight:600;color:var(--text-1);line-height:1; }
+#tb-clock .tc-date { font-size:10px;color:var(--text-2);line-height:1; }
+
+/* ─── START MENU ─── */
+#start-menu {
+  position:absolute;bottom:calc(var(--taskbar-h) + 8px);left:8px;
+  width:340px;
+  background:var(--bg-glass);backdrop-filter:blur(40px) saturate(1.5);
+  border:1px solid var(--border);border-radius:14px;
+  box-shadow:var(--shadow-lg);z-index:9998;
+  display:none;animation:popUp 0.2s cubic-bezier(0.34,1.3,0.64,1);
+}
+@keyframes popUp { from{transform:translateY(16px) scale(0.96);opacity:0}to{transform:none;opacity:1} }
+.sm-search-wrap { padding:14px 14px 10px; }
+#sm-search {
+  width:100%;padding:8px 12px;border-radius:9px;
+  background:var(--bg-tertiary);border:1px solid var(--border);
+  color:var(--text-1);font-family:var(--font-ui);font-size:13px;outline:none;
+  transition:border-color 0.2s;
+}
+#sm-search:focus { border-color:var(--border-focus);box-shadow:0 0 0 3px var(--accent-glow); }
+.sm-section-label {
+  padding:6px 14px 4px;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.8px;color:var(--text-2);
+}
+.sm-apps { display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:0 8px 10px; }
+.sm-app-btn {
+  display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;
+  border-radius:10px;border:none;background:transparent;cursor:pointer;
+  color:var(--text-1);font-family:var(--font-ui);font-size:11px;font-weight:500;
+  transition:background 0.15s;text-align:center;
+}
+.sm-app-btn:hover { background:var(--bg-tertiary); }
+.sm-app-btn .sa-ico { width:28px;height:28px;display:flex;align-items:center;justify-content:center; }
+.sm-bottom {
+  padding:10px 14px;border-top:1px solid var(--border);
+  display:flex;justify-content:flex-end;gap:8px;
+}
+.sm-bottom-btn {
+  padding:6px 14px;border-radius:7px;border:1px solid var(--border);
+  background:transparent;color:var(--text-2);font-family:var(--font-ui);font-size:12px;
+  cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.15s;
+}
+.sm-bottom-btn:hover { background:var(--bg-tertiary);color:var(--text-1); }
+
+/* ─── WINDOWS ─── */
+.solus-win {
+  position:absolute;
+  min-width:300px;min-height:180px;
+  background:var(--win-chrome);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-lg);
+  display:flex;flex-direction:column;overflow:hidden;
+  z-index:100;
+  animation:winOpen 0.18s cubic-bezier(0.34,1.15,0.64,1) forwards;
+}
+@keyframes winOpen { from{transform:scale(0.88);opacity:0}to{transform:scale(1);opacity:1} }
+.solus-win.focused { z-index:200;box-shadow:0 32px 100px rgba(0,0,0,0.85),0 0 0 1px rgba(255,255,255,0.05); }
+.solus-win.minimized { display:none; }
+.win-titlebar {
+  height:var(--titlebar-h);
+  background:var(--win-titlebar);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 10px 0 12px;gap:8px;
+  cursor:move;user-select:none;flex-shrink:0;
+}
+.win-titlebar .wt-ico { width:16px;height:16px;flex-shrink:0;opacity:0.8; }
+.win-titlebar h3 { font-size:12px;font-weight:600;color:var(--text-1);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.win-ctrl-group { display:flex;gap:5px;align-items:center; }
+.wctrl {
+  width:26px;height:26px;border-radius:6px;border:none;
+  background:transparent;cursor:pointer;color:var(--text-2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;
+}
+.wctrl:hover { background:rgba(255,255,255,0.08);color:var(--text-1); }
+.wctrl.close:hover { background:#c42b1c;color:#fff; }
+.win-body { flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative; }
+.resize-handle { position:absolute;bottom:0;right:0;width:18px;height:18px;cursor:se-resize;z-index:5; }
+
+/* ─── CONTEXT MENU ─── */
+#ctx-menu {
+  position:fixed;
+  background:var(--bg-glass);backdrop-filter:blur(30px) saturate(1.5);
+  border:1px solid var(--border);border-radius:10px;
+  box-shadow:var(--shadow-md);padding:5px 0;z-index:99999;min-width:175px;
+  display:none;animation:ctxIn 0.12s ease;
+}
+@keyframes ctxIn { from{transform:scale(0.95);opacity:0}to{transform:none;opacity:1} }
+.ctx-item {
+  padding:7px 14px;font-size:12px;font-weight:500;color:var(--text-2);cursor:pointer;
+  display:flex;align-items:center;gap:10px;transition:background 0.1s;
+}
+.ctx-item:hover { background:rgba(255,255,255,0.07);color:var(--text-1); }
+.ctx-item .ci-ico { width:14px;height:14px;flex-shrink:0;opacity:0.7; }
+.ctx-sep { height:1px;background:var(--border);margin:4px 0; }
+
+/* ─── NOTIFICATION ─── */
+#notif-stack {
+  position:absolute;top:12px;right:12px;
+  display:flex;flex-direction:column;gap:8px;z-index:9997;
+  pointer-events:none;
+}
+.notif {
+  background:var(--bg-glass);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;min-width:220px;max-width:300px;
+  box-shadow:var(--shadow-md);
+  animation:notifIn 0.3s cubic-bezier(0.34,1.2,0.64,1),notifOut 0.3s 2.7s ease forwards;
+  pointer-events:auto;
+}
+@keyframes notifIn { from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1} }
+@keyframes notifOut { to{transform:translateX(30px);opacity:0} }
+.notif-title { font-size:12px;font-weight:600;color:var(--text-1);margin-bottom:3px; }
+.notif-body  { font-size:11px;color:var(--text-2);line-height:1.4; }
+
+/* ─── TERMINAL ─── */
+#term-out {
+  flex:1;min-height:0;background:#0a0c10;padding:10px 12px;
+  font-family:var(--font-mono);font-size:13px;color:#b5ccf5;
+  overflow-y:auto;display:flex;flex-direction:column;gap:0;line-height:1.55;
+}
+.tl { white-space:pre-wrap;word-break:break-all; }
+.tl.err  { color:#ff7b72; }
+.tl.info { color:#79c0ff; }
+.tl.warn { color:#e3b341; }
+.tl.ok   { color:#56d364; }
+.tl.dim  { color:#484f58; }
+#term-input-row {
+  display:flex;align-items:center;padding:7px 12px;
+  background:#0a0c10;border-top:1px solid rgba(255,255,255,0.05);
+  flex-shrink:0;gap:6px;
+}
+#term-prompt { color:#56d364;font-family:var(--font-mono);font-size:13px;white-space:nowrap; }
+#term-inp {
+  flex:1;background:transparent;border:none;outline:none;
+  color:#b5ccf5;font-family:var(--font-mono);font-size:13px;caret-color:#79c0ff;
+}
+
+/* ─── FILE EXPLORER ─── */
+.exp-toolbar {
+  display:flex;align-items:center;gap:5px;padding:7px 10px;
+  border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg-secondary);
+}
+.exp-nav-btn {
+  width:28px;height:28px;border-radius:6px;border:none;
+  background:transparent;color:var(--text-2);cursor:pointer;
+  transition:all 0.15s;display:flex;align-items:center;justify-content:center;
+}
+.exp-nav-btn:hover { background:rgba(255,255,255,0.07);color:var(--text-1); }
+#exp-path-input {
+  flex:1;padding:5px 10px;border-radius:7px;
+  background:var(--bg-tertiary);border:1px solid var(--border);
+  color:var(--text-1);font-size:12px;outline:none;font-family:var(--font-ui);
+}
+#exp-path-input:focus { border-color:var(--border-focus); }
+.exp-main { flex:1;display:flex;overflow:hidden; }
+.exp-sidebar {
+  width:155px;padding:8px 6px;
+  border-right:1px solid var(--border);
+  overflow-y:auto;flex-shrink:0;background:var(--bg-secondary);
+}
+.exp-side-section { margin-bottom:6px; }
+.exp-side-label { font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-3);padding:4px 8px 2px; }
+.exp-side-item {
+  display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;
+  cursor:pointer;color:var(--text-2);font-size:12px;font-weight:500;
+  transition:background 0.15s;
+}
+.exp-side-item:hover  { background:rgba(255,255,255,0.06);color:var(--text-1); }
+.exp-side-item.active { background:rgba(88,166,255,0.12);color:var(--accent-text); }
+.exp-side-item .esi-ico { width:14px;height:14px;flex-shrink:0;opacity:0.7; }
+#exp-files {
+  flex:1;padding:12px;overflow-y:auto;
+  display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;
+}
+.file-item {
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  width:78px;padding:10px 5px 8px;border-radius:9px;cursor:pointer;
+  transition:background 0.15s;color:var(--text-1);text-align:center;
+}
+.file-item:hover    { background:rgba(255,255,255,0.07); }
+.file-item.selected { background:rgba(88,166,255,0.15);outline:1px solid rgba(88,166,255,0.3); }
+.file-item .fi-ico  { width:36px;height:36px;display:flex;align-items:center;justify-content:center; }
+.file-item .fi-name { font-size:11px;font-weight:500;word-break:break-word;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-1); }
+.exp-statusbar { padding:4px 12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-2);flex-shrink:0;background:var(--bg-secondary); }
+
+/* ─── BROWSER ─── */
+.br-frame-wrap { flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column; }
+#br-iframe { flex:1;border:none;background:#fff;width:100%;height:100%; }
+#br-loader {
+  position:absolute;top:0;left:0;height:2px;background:var(--accent);
+  transition:width 0.3s ease;border-radius:0 2px 0 0;pointer-events:none;
+  box-shadow:0 0 8px var(--accent-glow);
+}
+
+/* ─── NOTEPAD ─── */
+.np-menubar {
+  display:flex;gap:2px;padding:4px 8px;
+  border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg-secondary);
+}
+.np-menu-btn {
+  padding:3px 10px;border-radius:5px;border:none;background:transparent;
+  color:var(--text-2);font-family:var(--font-ui);font-size:12px;font-weight:500;cursor:pointer;
+  transition:background 0.15s;
+}
+.np-menu-btn:hover { background:rgba(255,255,255,0.07);color:var(--text-1); }
+#np-textarea, [id^="npta-"] {
+  flex:1;min-height:0;background:transparent;border:none;outline:none;
+  padding:14px 16px;color:var(--text-1);
+  font-family:var(--font-mono);font-size:13px;
+  resize:none;line-height:1.7;display:block;
+}
+
+/* ─── SETTINGS (full) ─── */
+.settings-layout { flex:1;display:flex;overflow:hidden; }
+.settings-nav {
+  width:180px;border-right:1px solid var(--border);
+  padding:10px 8px;overflow-y:auto;flex-shrink:0;background:var(--bg-secondary);
+}
+.sn-item {
+  display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;
+  cursor:pointer;color:var(--text-2);font-size:12px;font-weight:500;
+  transition:background 0.15s;
+}
+.sn-item:hover  { background:rgba(255,255,255,0.06);color:var(--text-1); }
+.sn-item.active { background:rgba(88,166,255,0.12);color:var(--accent-text); }
+.sn-item .sni-ico { width:15px;height:15px;flex-shrink:0;opacity:0.75; }
+.settings-content {
+  flex:1;overflow-y:auto;padding:20px;
+  display:none;flex-direction:column;gap:20px;min-height:0;
+}
+.settings-content.active { display:flex; }
+.settings-section h4 { font-size:13px;font-weight:700;color:var(--text-1);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border); }
+.setting-row { display:flex;align-items:center;justify-content:space-between;padding:8px 0; }
+.setting-row label { font-size:13px;font-weight:500;color:var(--text-1); }
+.setting-row p { font-size:11px;color:var(--text-2);margin-top:2px; }
+.setting-desc { flex:1; }
+/* Toggle */
+.toggle-pill { position:relative;width:42px;height:24px;flex-shrink:0; }
+.toggle-pill input { opacity:0;width:0;height:0;position:absolute; }
+.tp-track {
+  position:absolute;inset:0;border-radius:24px;
+  background:var(--bg-tertiary);border:1px solid var(--border);
+  cursor:pointer;transition:background 0.2s,border-color 0.2s;
+}
+.tp-thumb {
+  position:absolute;width:18px;height:18px;border-radius:50%;
+  background:#fff;top:3px;left:3px;transition:transform 0.2s;
+  box-shadow:0 1px 3px rgba(0,0,0,0.4);pointer-events:none;
+}
+.toggle-pill input:checked ~ .tp-track { background:var(--accent);border-color:var(--accent); }
+.toggle-pill input:checked ~ .tp-thumb { transform:translateX(18px); }
+/* Theme swatches */
+.swatch-grid { display:flex;flex-wrap:wrap;gap:8px; }
+.theme-swatch {
+  width:40px;height:40px;border-radius:10px;cursor:pointer;border:2px solid transparent;
+  transition:all 0.2s;position:relative;overflow:hidden;
+}
+.theme-swatch:hover { transform:scale(1.08); }
+.theme-swatch.sel { border-color:#fff;box-shadow:0 0 0 3px var(--accent-glow); }
+/* Font buttons */
+.font-option-grid { display:flex;flex-wrap:wrap;gap:8px; }
+.font-opt-btn {
+  padding:8px 14px;border-radius:9px;border:1px solid var(--border);
+  background:transparent;color:var(--text-2);font-size:12px;cursor:pointer;
+  transition:all 0.15s;
+}
+.font-opt-btn:hover { background:var(--bg-tertiary);color:var(--text-1); }
+.font-opt-btn.sel  { background:rgba(88,166,255,0.12);border-color:var(--accent);color:var(--accent-text); }
+/* Wallpaper grid */
+.wp-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:8px; }
+.wp-opt {
+  height:56px;border-radius:9px;border:2px solid transparent;cursor:pointer;
+  transition:all 0.2s;
+}
+.wp-opt:hover { transform:scale(1.03); }
+.wp-opt.sel { border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow); }
+/* Slider */
+.os-slider {
+  -webkit-appearance:none;width:100%;height:4px;border-radius:4px;
+  background:var(--bg-tertiary);outline:none;cursor:pointer;
+  accent-color:var(--accent);
+}
+/* Select */
+.os-select {
+  background:var(--bg-tertiary);border:1px solid var(--border);color:var(--text-1);
+  padding:6px 10px;border-radius:7px;font-family:var(--font-ui);font-size:12px;outline:none;cursor:pointer;
+}
+.os-select:focus { border-color:var(--border-focus); }
+
+/* ─── ABOUT ─── */
+.about-body { padding:30px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;color:var(--text-1);overflow-y:auto; }
+.about-logo { width:72px;height:72px; }
+.about-body h2 { font-size:26px;font-weight:700; }
+.about-body .about-ver { font-size:14px;color:var(--accent-text);font-weight:600; }
+.about-body p { font-size:13px;color:var(--text-2);line-height:1.6;max-width:320px; }
+.about-badge {
+  display:inline-flex;align-items:center;gap:6px;padding:5px 12px;
+  border-radius:20px;background:var(--bg-tertiary);border:1px solid var(--border);
+  font-size:11px;color:var(--text-2);
+}
+.about-actions { display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px; }
+.about-btn {
+  padding:8px 18px;border-radius:8px;border:1px solid var(--border);
+  background:transparent;color:var(--text-1);font-family:var(--font-ui);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:7px;
+}
+.about-btn:hover { background:var(--bg-tertiary); }
+.about-btn.primary { background:var(--accent2);border-color:var(--accent);color:#fff; }
+.about-btn.primary:hover { opacity:0.9; }
+
+/* ─── SCROLLBARS ─── */
+::-webkit-scrollbar { width:5px;height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.12);border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(255,255,255,0.22); }
+</style>
+</head>
+<body>
+<div id="desktop">
+  <!-- Desktop Icons injected by JS -->
+  <div id="desktop-icons"></div>
+  <div id="notif-stack"></div>
+</div>
+
+<!-- Taskbar -->
+<div id="taskbar">
+  <button id="start-btn" onclick="toggleStart()">
+    <!-- Solus logo SVG -->
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="9" stroke="var(--accent)" stroke-width="1.8"/>
+      <circle cx="11" cy="11" r="5.5" fill="var(--accent)" opacity="0.9"/>
+      <circle cx="11" cy="11" r="2.5" fill="var(--win-chrome,#0d1117)"/>
+      <line x1="11" y1="2" x2="11" y2="5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="11" y1="17" x2="11" y2="20" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="2" y1="11" x2="5" y2="11" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="17" y1="11" x2="20" y2="11" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <div class="tb-sep"></div>
+  <div id="taskbar-apps"></div>
+  <div id="tb-right">
+    <div id="tb-sys-icons">
+      <!-- Wifi icon -->
+      <button class="tb-sys-btn" title="Network">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M1 5.5C3.2 3.3 5.9 2 8 2c2.1 0 4.8 1.3 7 3.5" stroke="var(--text-2)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M3.2 8.2C4.8 6.6 6.4 5.7 8 5.7c1.6 0 3.2.9 4.8 2.5" stroke="var(--text-2)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M5.5 10.8C6.3 10 7.1 9.5 8 9.5c.9 0 1.7.5 2.5 1.3" stroke="var(--text-2)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="8" cy="13.5" r="1.2" fill="var(--text-2)"/>
+        </svg>
+      </button>
+      <!-- Volume icon -->
+      <button class="tb-sys-btn" title="Volume">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2 6h3l4-3v10L5 10H2V6z" fill="var(--text-2)"/>
+          <path d="M11 5.5c1.3 0.8 2 2.1 2 2.5s-0.7 1.7-2 2.5" stroke="var(--text-2)" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12.5 3c2 1.3 3 3.2 3 5s-1 3.7-3 5" stroke="var(--text-2)" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="tb-sep"></div>
+    <div id="tb-clock">
+      <span class="tc-time" id="clock-t">--:--</span>
+      <span class="tc-date" id="clock-d">---</span>
+    </div>
+  </div>
+</div>
+
+<!-- Start Menu -->
+<div id="start-menu">
+  <div class="sm-search-wrap">
+    <input type="text" id="sm-search" placeholder="Search apps and files..." oninput="filterStart(this.value)" autocomplete="off">
+  </div>
+  <div class="sm-section-label">All Apps</div>
+  <div class="sm-apps" id="sm-app-grid"></div>
+  <div class="sm-bottom">
+    <button class="sm-bottom-btn" onclick="openApp('settings');closeStart()">
+      <svg width="13" height="13" viewBox="0 0 22 22"><circle cx="11" cy="11" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 2v3M11 17v3M2 11h3M17 11h3M4.2 4.2l2.1 2.1M15.7 15.7l2.1 2.1M4.2 17.8l2.1-2.1M15.7 6.3l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Settings
+    </button>
+    <button class="sm-bottom-btn" onclick="showNotif('Solus OS','Shutdown is not available in simulator mode.')">
+      <svg width="13" height="13" viewBox="0 0 22 22"><path d="M11 2v9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M7 4.3A9 9 0 1 0 15 4.3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Power
+    </button>
+  </div>
+</div>
+
+<!-- Context Menu -->
+<div id="ctx-menu"></div>
+
+<script>
+// ═══════════════════════════════════════════
+//  SVG ICON LIBRARY (no emojis!)
+// ═══════════════════════════════════════════
+const ICONS = {
+  terminal: `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="3" fill="var(--accent2)" opacity="0.25" stroke="var(--accent)" stroke-width="1.2"/><path d="M6 8l4 4-4 4" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="16" x2="18" y2="16" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  explorer: `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" fill="#f0a84f" opacity="0.3" stroke="#f0a84f" stroke-width="1.2"/><path d="M3 11h18" stroke="#f0a84f" stroke-width="1.2"/></svg>`,
+  browser:  `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="#58a6ff" opacity="0.18" stroke="#58a6ff" stroke-width="1.2"/><ellipse cx="12" cy="12" rx="4" ry="9" stroke="#58a6ff" stroke-width="1" fill="none"/><line x1="3" y1="9" x2="21" y2="9" stroke="#58a6ff" stroke-width="1"/><line x1="3" y1="15" x2="21" y2="15" stroke="#58a6ff" stroke-width="1"/></svg>`,
+  notepad:  `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="2" fill="#a78bfa" opacity="0.2" stroke="#a78bfa" stroke-width="1.2"/><line x1="8" y1="8" x2="16" y2="8" stroke="#a78bfa" stroke-width="1.4" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="#a78bfa" stroke-width="1.4" stroke-linecap="round"/><line x1="8" y1="16" x2="12" y2="16" stroke="#a78bfa" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  settings: `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" fill="none" stroke="var(--text-2)" stroke-width="1.8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1l2.1-2.1M17 7l2.1-2.1" stroke="var(--text-2)" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  about:    `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="1.2"/><circle cx="12" cy="8" r="1.2" fill="var(--accent)"/><line x1="12" y1="11" x2="12" y2="17" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>`,
+
+  // File type icons
+  fileText: `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8L14 2z" fill="#a78bfa" opacity="0.25" stroke="#a78bfa" stroke-width="1.2"/><path d="M14 2v6h6" stroke="#a78bfa" stroke-width="1.2" stroke-linejoin="round"/><line x1="8" y1="13" x2="16" y2="13" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round"/><line x1="8" y1="17" x2="13" y2="17" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round"/></svg>`,
+  fileCode: `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8L14 2z" fill="#56d364" opacity="0.2" stroke="#56d364" stroke-width="1.2"/><path d="M14 2v6h6" stroke="#56d364" stroke-width="1.2"/><path d="M9 14l-2 2 2 2M15 14l2 2-2 2" stroke="#56d364" stroke-width="1.3" stroke-linecap="round"/></svg>`,
+  fileImg:  `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8L14 2z" fill="#f0a84f" opacity="0.2" stroke="#f0a84f" stroke-width="1.2"/><path d="M14 2v6h6" stroke="#f0a84f" stroke-width="1.2"/><circle cx="10" cy="14" r="1.5" fill="#f0a84f"/><path d="M6 19l4-4 3 3 2-2 3 3" stroke="#f0a84f" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  folder:   `<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" fill="#f0a84f" opacity="0.35" stroke="#f0a84f" stroke-width="1.3"/><path d="M3 11h18" stroke="#f0a84f" stroke-width="1.1" opacity="0.5"/></svg>`,
+  folderOpen:`<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none"><path d="M2 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v1H4" fill="#f0a84f" opacity="0.3" stroke="#f0a84f" stroke-width="1.2"/><path d="M4 9h16l-2 9H4L2 9z" fill="#f0a84f" opacity="0.3" stroke="#f0a84f" stroke-width="1.2"/></svg>`,
+
+  // Nav icons
+  arrowLeft: `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  arrowRight:`<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  arrowUp:   `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M3 10l5-5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  refresh:   `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M13 8A5 5 0 1 1 8 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8 1v4h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  home:      `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M2 7.5L8 2l6 5.5V14H10v-3H6v3H2V7.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+  go:        `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  minimize:  `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><line x1="4" y1="12" x2="12" y2="12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  maximize:  `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><rect x="4" y="4" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>`,
+  close:     `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+  newFile:   `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8L14 2z" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="11" x2="12" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="14" x2="15" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  newFolder: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="11" x2="12" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="14" x2="15" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  trash:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="currentColor" stroke-width="1.5"/></svg>`,
+  rename:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.5"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5"/></svg>`,
+
+  // Sidebar
+  sideDesktop:`<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><line x1="5" y1="15" x2="11" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><line x1="8" y1="12" x2="8" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  sideDocs:   `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M9 1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5L9 1z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1v4h4" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="9" x2="11" y2="9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="5" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`,
+  sideDown:   `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M13 11v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M8 2v8M5 8l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  sidePics:   `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="5.5" cy="6" r="1.2" fill="currentColor"/><path d="M2 12l3.5-4 3 3 2-2 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  sideSys:    `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="14" x2="11" y2="14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="8" y1="11" x2="8" y2="14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`,
+  sidePC:     `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><rect x="1" y="5" width="14" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 5V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.3"/><rect x="6" y="9" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/></svg>`,
+
+  // Settings nav
+  settingsAppearance: `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 2.5V5M8 11v2.5M2.5 8H5M11 8h2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`,
+  settingsDisplay:    `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><rect x="1" y="2.5" width="14" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><line x1="5" y1="14" x2="11" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  settingsFonts:      `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><path d="M3 13L7 3l4 10M5 10h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 7v6M9.5 7h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  settingsSystem:     `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  settingsProxy:      `<svg width="100%" height="100%" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.4"/><ellipse cx="8" cy="8" rx="2.5" ry="5.5" stroke="currentColor" stroke-width="1.2"/><line x1="2.5" y1="6" x2="13.5" y2="6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="2.5" y1="10" x2="13.5" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`,
+};
+
+function ico(key, cls='') {
+  return `<span style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;" class="${cls}">${ICONS[key]||''}</span>`;
+}
+
+// ═══════════════════════════════════════════
+//  FILE SYSTEM
+// ═══════════════════════════════════════════
+const FS = { '/': { type:'dir', children:{} } };
+
+function mkDir(p){ const pts=p.split('/').filter(Boolean);let n=FS['/'];for(const s of pts){if(!n.children[s])n.children[s]={type:'dir',children:{}};n=n.children[s];}return n; }
+function wFile(p,c){ const pts=p.split('/').filter(Boolean);const nm=pts.pop();const dir=getNode('/'+pts.join('/'))||FS['/'];dir.children[nm]={type:'file',content:c,modified:new Date().toISOString()}; }
+function getNode(p){ if(p==='/'||p==='')return FS['/'];const pts=p.split('/').filter(Boolean);let n=FS['/'];for(const s of pts){if(!n.children||!n.children[s])return null;n=n.children[s];}return n; }
+function listDir(p){ const n=getNode(p);if(!n||n.type!=='dir')return null;return Object.entries(n.children).filter(([k])=>!k.startsWith('.')).map(([name,node])=>({name,type:node.type,size:node.type==='file'?(node.content||'').length:0})); }
+function rmNode(p){ const pts=p.split('/').filter(Boolean);const nm=pts.pop();const parent=getNode('/'+pts.join('/'));if(parent?.children)delete parent.children[nm]; }
+function resolvePath(p, cwd='/'){
+  if(!p)return cwd;
+  if(p==='~')return '/';
+  if(p==='/')return '/';
+  if(p.startsWith('/'))return p.replace(/\/+$/,'')||'/';
+  if(p==='..')return cwd.split('/').slice(0,-1).join('/')||'/';
+  if(p==='.')return cwd;
+  const base=(cwd==='/'?'':cwd);
+  return (base+'/'+p).replace(/\/+/,'/');
+}
+
+function initFS(){
+  mkDir('/Desktop');mkDir('/Documents');mkDir('/Downloads');mkDir('/Pictures');mkDir('/System');
+  wFile('/Documents/welcome.txt','Welcome to Solus OS\n===================\n\nA sleek, modern browser-based operating system.\nFeatures:\n  - Customizable themes & fonts\n  - File Explorer with virtual FS\n  - Terminal with full commands\n  - KatsuBrowser with full web access\n  - Notepad with save/load\n\nTip: Right-click the desktop for options.\nTip: Open Settings to theme your OS!');
+  wFile('/Documents/shortcuts.txt','Keyboard Shortcuts\n==================\n\nDouble-click icon  → Open app\nRight-click desktop → Context menu\nClick taskbar btn  → Toggle window\n\nTerminal Commands:\n  help, ls, cd, pwd, cat, mkdir\n  touch, rm, echo, clear, sysinfo\n  date, whoami, open, theme');
+  wFile('/System/version.txt','Solus OS v1.0\\nBuild: 2025.01\\nKernel: Solus Kernel 5.0\\nBrowser: KatsuBrowser');
+  wFile('/Downloads/.keep','');wFile('/Pictures/.keep','');
+}
+initFS();
+
+// ═══════════════════════════════════════════
+//  THEME SYSTEM
+// ═══════════════════════════════════════════
+const THEMES = [
+  { id:'blue',   label:'Ocean',   swatch:'linear-gradient(135deg,#0a0e1a,#1f6feb)', cls:'theme-blue' },
+  { id:'purple', label:'Nebula',  swatch:'linear-gradient(135deg,#0d0b14,#7c3aed)', cls:'theme-purple' },
+  { id:'green',  label:'Forest',  swatch:'linear-gradient(135deg,#0b1410,#238636)', cls:'theme-green' },
+  { id:'rose',   label:'Bloom',   swatch:'linear-gradient(135deg,#150b11,#e4316e)', cls:'theme-rose' },
+  { id:'amber',  label:'Ember',   swatch:'linear-gradient(135deg,#130f08,#d97706)', cls:'theme-amber' },
+  { id:'light',  label:'Solus Light',swatch:'linear-gradient(135deg,#edf2fb,#0969da)', cls:'theme-light' },
+];
+const FONTS = [
+  { id:'inter',  label:'Inter',        cls:'font-inter',  sample:'Aa Bb Cc' },
+  { id:'space',  label:'Space Grotesk',cls:'font-space',  sample:'Aa Bb Cc' },
+  { id:'ibm',    label:'IBM Plex',     cls:'font-ibm',    sample:'Aa Bb Cc' },
+  { id:'outfit', label:'Outfit',       cls:'font-outfit', sample:'Aa Bb Cc' },
+  { id:'geist',  label:'Geist',        cls:'font-geist',  sample:'Aa Bb Cc' },
+];
+const WALLPAPERS = [
+  'radial-gradient(ellipse at 20% 80%,rgba(30,70,120,0.4) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(88,40,140,0.3) 0%,transparent 55%),linear-gradient(160deg,#0a0e1a 0%,#0d1117 50%,#0a0d16 100%)',
+  'radial-gradient(ellipse at 50% 100%,rgba(88,166,255,0.3) 0%,transparent 65%),linear-gradient(180deg,#020b1a,#041830)',
+  'radial-gradient(ellipse at 0% 100%,rgba(100,40,180,0.5) 0%,transparent 55%),radial-gradient(ellipse at 100% 0%,rgba(40,10,90,0.4) 0%,transparent 50%),#0a0812',
+  'radial-gradient(ellipse at 50% 50%,rgba(63,185,80,0.2) 0%,transparent 70%),linear-gradient(160deg,#050e08,#0b1410)',
+  'radial-gradient(ellipse at 20% 60%,rgba(240,168,79,0.3) 0%,transparent 55%),linear-gradient(160deg,#0e0b05,#130f08)',
+  'linear-gradient(180deg,#0d0014,#000d1a)',
+];
+
+let currentTheme='blue', currentFont='inter', currentWp=0;
+
+function applyTheme(id){
+  currentTheme=id;
+  const t=THEMES.find(x=>x.id===id);
+  const body=document.body;
+  THEMES.forEach(tt=>body.classList.remove(tt.cls));
+  if(t) body.classList.add(t.cls);
+  document.getElementById('desktop').style.background='var(--wallpaper)';
+}
+function applyFont(id){
+  currentFont=id;
+  const f=FONTS.find(x=>x.id===id);
+  const body=document.body;
+  FONTS.forEach(ff=>body.classList.remove(ff.cls));
+  if(f) body.classList.add(f.cls);
+}
+function applyWallpaper(idx){
+  currentWp=idx;
+  document.getElementById('desktop').style.background=WALLPAPERS[idx];
+}
+
+// ═══════════════════════════════════════════
+//  WINDOW MANAGER
+// ═══════════════════════════════════════════
+let winZ=100, focusedWin=null;
+const WINS={};
+
+function createWindow(id,title,iconKey,w,h,bodyHtml,onReady){
+  if(WINS[id]&&document.getElementById('win-'+id)){
+    focusWin(id);restoreWin(id);return;
+  }
+  const win=document.createElement('div');
+  win.className='solus-win';win.id='win-'+id;
+  const ox=Math.min(Math.floor((window.innerWidth-w)/2)+(Object.keys(WINS).length*22%120),window.innerWidth-w-10);
+  const oy=Math.min(Math.floor((window.innerHeight-48-h)/2)+(Object.keys(WINS).length*22%80),window.innerHeight-48-h-10);
+  win.style.cssText=`left:${Math.max(0,ox)}px;top:${Math.max(0,oy)}px;width:${w}px;height:${h}px;`;
+  win.innerHTML=`
+    <div class="win-titlebar" onmousedown="startDrag(event,'${id}')">
+      <div class="wt-ico">${ICONS[iconKey]||''}</div>
+      <h3>${title}</h3>
+      <div class="win-ctrl-group">
+        <button class="wctrl" onclick="minimizeWin('${id}')" title="Minimize"><div style="width:14px;height:14px">${ICONS.minimize}</div></button>
+        <button class="wctrl" onclick="maximizeWin('${id}')" title="Maximize"><div style="width:14px;height:14px">${ICONS.maximize}</div></button>
+        <button class="wctrl close" onclick="closeWin('${id}')" title="Close"><div style="width:14px;height:14px">${ICONS.close}</div></button>
+      </div>
+    </div>
+    <div class="win-body" id="wb-${id}">${bodyHtml}</div>
+    <div class="resize-handle" onmousedown="startResize(event,'${id}')"></div>
+  `;
+  document.getElementById('desktop').appendChild(win);
+  WINS[id]={title,iconKey,minimized:false,maximized:false,savedStyle:null};
+  focusWin(id);addTbBtn(id,iconKey,title);
+  if(onReady)setTimeout(onReady,40);
+}
+
+function focusWin(id){
+  document.querySelectorAll('.solus-win').forEach(w=>w.classList.remove('focused'));
+  const w=document.getElementById('win-'+id);
+  if(w){w.classList.add('focused');w.style.zIndex=++winZ;}
+  document.querySelectorAll('.tb-btn').forEach(b=>b.classList.remove('active'));
+  const tb=document.getElementById('tb-'+id);
+  if(tb)tb.classList.add('active');
+  focusedWin=id;
+}
+function closeWin(id){
+  const w=document.getElementById('win-'+id);
+  if(w){w.style.transition='transform .14s,opacity .14s';w.style.transform='scale(0.9)';w.style.opacity='0';setTimeout(()=>w.remove(),140);}
+  const tb=document.getElementById('tb-'+id);if(tb)tb.remove();
+  delete WINS[id];
+}
+function minimizeWin(id){
+  const w=document.getElementById('win-'+id);if(w)w.classList.add('minimized');
+  if(WINS[id])WINS[id].minimized=true;
+  const tb=document.getElementById('tb-'+id);if(tb)tb.classList.remove('active');
+}
+function restoreWin(id){
+  const w=document.getElementById('win-'+id);if(w)w.classList.remove('minimized');
+  if(WINS[id])WINS[id].minimized=false;
+  focusWin(id);
+}
+function maximizeWin(id){
+  const w=document.getElementById('win-'+id);if(!w)return;
+  if(WINS[id].maximized){w.style.cssText=WINS[id].savedStyle;WINS[id].maximized=false;}
+  else{WINS[id].savedStyle=w.style.cssText;w.style.left='0';w.style.top='0';w.style.width=window.innerWidth+'px';w.style.height=(window.innerHeight-48)+'px';WINS[id].maximized=true;}
+}
+function addTbBtn(id,iconKey,title){
+  const btn=document.createElement('button');
+  btn.className='tb-btn active';btn.id='tb-'+id;
+  btn.innerHTML=`<span class="tb-ico">${ICONS[iconKey]||''}</span><span class="tb-btn-label">${title}</span>`;
+  btn.onclick=()=>{
+    if(!WINS[id])return;
+    if(WINS[id].minimized)restoreWin(id);
+    else if(focusedWin===id)minimizeWin(id);
+    else focusWin(id);
+  };
+  document.getElementById('taskbar-apps').appendChild(btn);
+}
+
+// Drag
+let dragging=null,dragOff={x:0,y:0};
+function startDrag(e,id){
+  if(e.target.closest('.wctrl'))return;
+  if(WINS[id]?.maximized)return;
+  focusWin(id);dragging=id;
+  const r=document.getElementById('win-'+id).getBoundingClientRect();
+  dragOff.x=e.clientX-r.left;dragOff.y=e.clientY-r.top;
+  e.preventDefault();
+}
+document.addEventListener('mousemove',e=>{
+  if(dragging){
+    const w=document.getElementById('win-'+dragging);if(!w)return;
+    w.style.left=Math.max(0,Math.min(window.innerWidth-60,e.clientX-dragOff.x))+'px';
+    w.style.top=Math.max(0,Math.min(window.innerHeight-68,e.clientY-dragOff.y))+'px';
+  }
+  if(resizing){
+    const w=document.getElementById('win-'+resizing);if(!w)return;
+    w.style.width=Math.max(300,resizeStart.w+(e.clientX-resizeStart.x))+'px';
+    w.style.height=Math.max(180,resizeStart.h+(e.clientY-resizeStart.y))+'px';
+  }
+});
+document.addEventListener('mouseup',()=>{dragging=null;resizing=null;});
+
+let resizing=null,resizeStart={x:0,y:0,w:0,h:0};
+function startResize(e,id){
+  focusWin(id);resizing=id;
+  const w=document.getElementById('win-'+id);
+  resizeStart={x:e.clientX,y:e.clientY,w:w.offsetWidth,h:w.offsetHeight};
+  e.preventDefault();e.stopPropagation();
+}
+
+document.getElementById('desktop').addEventListener('mousedown',e=>{
+  const w=e.target.closest('.solus-win');
+  if(w)focusWin(w.id.replace('win-',''));
+});
+
+// ═══════════════════════════════════════════
+//  START MENU
+// ═══════════════════════════════════════════
+let startOpen=false;
+const APP_LIST=[
+  {id:'browser', label:'Browser',  iconKey:'browser'},
+  {id:'explorer',label:'Explorer', iconKey:'explorer'},
+  {id:'terminal',label:'Terminal', iconKey:'terminal'},
+  {id:'notepad', label:'Notepad',  iconKey:'notepad'},
+  {id:'settings',label:'Settings', iconKey:'settings'},
+  {id:'about',   label:'About',    iconKey:'about'},
+];
+
+function buildStartMenu(){
+  const grid=document.getElementById('sm-app-grid');
+  APP_LIST.forEach(a=>{
+    const btn=document.createElement('button');
+    btn.className='sm-app-btn';btn.dataset.label=a.label.toLowerCase();
+    btn.innerHTML=`<span class="sa-ico">${ICONS[a.iconKey]||''}</span>${a.label}`;
+    btn.onclick=()=>{openApp(a.id);closeStart();};
+    grid.appendChild(btn);
+  });
+}
+
+function toggleStart(){startOpen?closeStart():openStart();}
+function openStart(){document.getElementById('start-menu').style.display='block';startOpen=true;}
+function closeStart(){document.getElementById('start-menu').style.display='none';startOpen=false;}
+function filterStart(q){
+  document.querySelectorAll('#sm-app-grid .sm-app-btn').forEach(b=>{
+    b.style.display=b.dataset.label.includes(q.toLowerCase())?'':'none';
+  });
+}
+
+// ═══════════════════════════════════════════
+//  CONTEXT MENU
+// ═══════════════════════════════════════════
+let ctxOpen=false;
+function showCtx(items,x,y){
+  const m=document.getElementById('ctx-menu');
+  m.innerHTML='';
+  items.forEach(it=>{
+    if(it==='sep'){const s=document.createElement('div');s.className='ctx-sep';m.appendChild(s);return;}
+    const d=document.createElement('div');d.className='ctx-item';
+    d.innerHTML=`<span class="ci-ico">${ICONS[it.icon]||''}</span>${it.label}`;
+    d.onclick=()=>{closeCtx();it.action();};
+    m.appendChild(d);
+  });
+  m.style.left=Math.min(x,window.innerWidth-185)+'px';
+  m.style.top=Math.min(y,window.innerHeight-m.children.length*32-20)+'px';
+  m.style.display='block';ctxOpen=true;
+}
+function closeCtx(){document.getElementById('ctx-menu').style.display='none';ctxOpen=false;}
+
+document.getElementById('desktop').addEventListener('contextmenu',e=>{
+  if(e.target.closest('.solus-win')||e.target.closest('#taskbar'))return;
+  e.preventDefault();
+  showCtx([
+    {icon:'terminal',label:'Open Terminal', action:()=>openApp('terminal')},
+    {icon:'explorer',label:'Open Explorer', action:()=>openApp('explorer')},
+    'sep',
+    {icon:'newFile',  label:'New File',     action:()=>ctxNewFile()},
+    {icon:'newFolder',label:'New Folder',   action:()=>ctxNewFolder()},
+    'sep',
+    {icon:'settings', label:'Settings',     action:()=>openApp('settings')},
+  ],e.clientX,e.clientY);
+});
+document.addEventListener('click',e=>{
+  if(ctxOpen&&!e.target.closest('#ctx-menu'))closeCtx();
+  if(startOpen&&!e.target.closest('#start-menu')&&!e.target.closest('#start-btn'))closeStart();
+});
+function ctxNewFile(){const n=prompt('File name:','untitled.txt');if(n)wFile('/Desktop/'+n,'');}
+function ctxNewFolder(){const n=prompt('Folder name:','New Folder');if(n)mkDir('/Desktop/'+n);}
+
+// ═══════════════════════════════════════════
+//  NOTIFICATIONS
+// ═══════════════════════════════════════════
+function showNotif(title,body){
+  const stack=document.getElementById('notif-stack');
+  const n=document.createElement('div');n.className='notif';
+  n.innerHTML=`<div class="notif-title">${title}</div><div class="notif-body">${body}</div>`;
+  stack.appendChild(n);
+  setTimeout(()=>n.remove(),3200);
+}
+
+// ═══════════════════════════════════════════
+//  CLOCK
+// ═══════════════════════════════════════════
+function updateClock(){
+  const now=new Date();
+  document.getElementById('clock-t').textContent=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('clock-d').textContent=now.toLocaleDateString([],{month:'short',day:'numeric'});
+}
+updateClock();setInterval(updateClock,1000);
+
+// ═══════════════════════════════════════════
+//  DESKTOP ICONS
+// ═══════════════════════════════════════════
+function buildDesktopIcons(){
+  const container=document.getElementById('desktop-icons');container.innerHTML='';
+  APP_LIST.forEach(a=>{
+    const d=document.createElement('div');d.className='desk-icon';
+    d.innerHTML=`<div class="di-icon">${ICONS[a.iconKey]||''}</div><div class="di-label">${a.label}</div>`;
+    d.ondblclick=()=>openApp(a.id);
+    container.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  OPEN APP DISPATCHER
+// ═══════════════════════════════════════════
+function openApp(id,opts={}){
+  switch(id){
+    case 'terminal': openTerminal();break;
+    case 'explorer': openExplorer(opts.path);break;
+    case 'browser':  openBrowser(opts.url);break;
+    case 'notepad':  openNotepad(opts.file,opts.content);break;
+    case 'settings': openSettings(opts.tab);break;
+    case 'about':    openAbout();break;
+  }
+}
+
+// ═══════════════════════════════════════════
+//  TERMINAL
+// ═══════════════════════════════════════════
+let termCwd='/';let termHist=[];let termHistIdx=-1;
+
+const TERM_CMDS={
+  help:()=>[
+    ['info','Solus OS Terminal — v1.0'],
+    ['dim', '─────────────────────────────────'],
+    ['ok',  '  help              Show this help'],
+    ['',    '  ls  [path]        List directory contents'],
+    ['',    '  cd  <path>        Change directory'],
+    ['',    '  pwd               Print working directory'],
+    ['',    '  cat <file>        Display file contents'],
+    ['',    '  mkdir <name>      Create directory'],
+    ['',    '  touch <name>      Create empty file'],
+    ['',    '  rm  <path>        Remove file or directory'],
+    ['',    '  echo <text>       Print text'],
+    ['',    '  clear             Clear terminal'],
+    ['',    '  sysinfo           System information'],
+    ['',    '  date              Current date & time'],
+    ['',    '  whoami            Current user'],
+    ['',    '  open  <file>      Open file in app'],
+    ['',    '  theme <name>      Change OS theme (blue/purple/green/rose/amber/light)'],
+  ],
+  ls:(args)=>{
+    const p=args[0]?resolvePath(args[0],termCwd):termCwd;
+    const items=listDir(p);
+    if(!items)return[['err',`ls: cannot access '${p}': No such directory`]];
+    if(!items.length)return[['dim','(empty)']];
+    return items.map(i=>[i.type==='dir'?'info':'','  '+(i.type==='dir'?'[DIR]  ':'[FILE] ')+i.name+(i.type==='dir'?'/':'')]);
+  },
+  cd:(args)=>{
+    if(!args[0])return[['','']];
+    const p=resolvePath(args[0],termCwd);
+    const n=getNode(p);
+    if(!n)return[['err',`cd: ${args[0]}: No such file or directory`]];
+    if(n.type!=='dir')return[['err',`cd: ${args[0]}: Not a directory`]];
+    termCwd=p;return[['','']];
+  },
+  pwd:()=>[['',' '+termCwd]],
+  cat:(args)=>{
+    if(!args[0])return[['err','cat: missing operand']];
+    const p=resolvePath(args[0],termCwd);
+    const n=getNode(p);
+    if(!n)return[['err',`cat: ${args[0]}: No such file`]];
+    if(n.type==='dir')return[['err',`cat: ${args[0]}: Is a directory`]];
+    return n.content.split('\n').map(l=>(['',l]));
+  },
+  mkdir:(args)=>{
+    if(!args[0])return[['err','mkdir: missing operand']];
+    mkDir(resolvePath(args[0],termCwd));return[['ok','Directory created.']];
+  },
+  touch:(args)=>{
+    if(!args[0])return[['err','touch: missing operand']];
+    wFile(resolvePath(args[0],termCwd),'');return[['ok','File created.']];
+  },
+  rm:(args)=>{
+    if(!args[0])return[['err','rm: missing operand']];
+    const p=resolvePath(args[0],termCwd);
+    const n=getNode(p);if(!n)return[['err',`rm: ${args[0]}: No such file`]];
+    rmNode(p);return[['ok','Removed.']];
+  },
+  echo:(args)=>[['',' '+args.join(' ')]],
+  clear:()=>'CLEAR',
+  sysinfo:()=>[
+    ['info','Solus OS — System Information'],
+    ['dim', '──────────────────────────────'],
+    ['','  OS       Solus OS v1.0'],
+    ['','  Kernel   Solus Kernel 5.0'],
+    ['','  Arch     x86_64 (virtual)'],
+    ['','  RAM      4096 MB'],
+    ['','  Browser  KatsuBrowser 1.0'],
+    ['','  Theme    '+currentTheme],
+    ['','  Font     '+currentFont],
+    ['','  Time     '+new Date().toLocaleString()],
+  ],
+  date:()=>[['',' '+new Date().toString()]],
+  whoami:()=>[['',' user@solusOS']],
+  open:(args)=>{
+    if(!args[0])return[['err','open: missing file']];
+    const p=resolvePath(args[0],termCwd);
+    const n=getNode(p);
+    if(!n)return[['err',`open: ${args[0]}: No such file`]];
+    if(n.type==='dir'){openApp('explorer',{path:p});return[['ok',`Opening folder: ${p}`]];}
+    openApp('notepad',{file:p,content:n.content});return[['ok',`Opening: ${p}`]];
+  },
+  theme:(args)=>{
+    const t=args[0];
+    const valid=['blue','purple','green','rose','amber','light'];
+    if(!t||!valid.includes(t))return[['warn','Usage: theme <'+valid.join('|')+'>']];
+    applyTheme(t);return[['ok',`Theme set to '${t}'.`]];
+  },
+};
+
+function openTerminal(){
+  createWindow('terminal','Terminal','terminal',680,440,
+    `<div id="term-out"></div>
+     <div id="term-input-row">
+       <span id="term-prompt">user@solusOS:~$&nbsp;</span>
+       <input id="term-inp" autocomplete="off" spellcheck="false">
+     </div>`,
+    ()=>{
+      termPrint('info','Solus OS Terminal v1.0');
+      termPrint('info','Type "help" for available commands.');
+      termPrint('dim','');
+      updateTermPrompt();
+      const inp=document.getElementById('term-inp');
+      if(!inp)return;
+      inp.addEventListener('keydown',onTermKey);
+      document.getElementById('wb-terminal')?.addEventListener('click',()=>inp.focus());
+      inp.focus();
+    }
+  );
+}
+function termPrint(cls,text){
+  const out=document.getElementById('term-out');if(!out)return;
+  const l=document.createElement('div');l.className='tl '+(cls||'');l.textContent=text;
+  out.appendChild(l);out.scrollTop=out.scrollHeight;
+}
+function updateTermPrompt(){
+  const el=document.getElementById('term-prompt');
+  if(el)el.innerHTML=`<span style="color:#79c0ff">user</span><span style="color:var(--text-2)">@solusOS</span><span style="color:var(--text-3)">:</span><span style="color:#e3b341">${termCwd}</span><span style="color:var(--text-2)">$&nbsp;</span>`;
+}
+function onTermKey(e){
+  const inp=e.target;
+  if(e.key==='Enter'){
+    const raw=inp.value.trim();
+    const prompt=`user@solusOS:${termCwd}$ `;
+    termPrint('dim',prompt+raw);
+    if(raw){termHist.unshift(raw);termHistIdx=-1;runTerm(raw);}
+    inp.value='';updateTermPrompt();
+  } else if(e.key==='ArrowUp'){
+    if(termHistIdx<termHist.length-1){termHistIdx++;inp.value=termHist[termHistIdx];}e.preventDefault();
+  } else if(e.key==='ArrowDown'){
+    if(termHistIdx>0){termHistIdx--;inp.value=termHist[termHistIdx];}else{termHistIdx=-1;inp.value='';}e.preventDefault();
+  }
+}
+function runTerm(raw){
+  const parts=raw.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g)||[];
+  const cmd=parts[0];const args=parts.slice(1).map(a=>a.replace(/^["']|["']$/g,''));
+  const fn=TERM_CMDS[cmd];
+  if(!fn){termPrint('err',`${cmd}: command not found. Type "help" for a list.`);return;}
+  const result=fn(args);
+  if(result==='CLEAR'){const out=document.getElementById('term-out');if(out)out.innerHTML='';}
+  else if(Array.isArray(result))result.forEach(([c,t])=>{if(t!==undefined)termPrint(c,t);});
+}
+
+// ═══════════════════════════════════════════
+//  FILE EXPLORER
+// ═══════════════════════════════════════════
+let expCwd='/';let expHist=['/'];let expHistIdx2=0;
+function openExplorer(startPath){
+  if(startPath)expCwd=startPath;
+  // If already open, just re-render with new path
+  if(WINS['explorer']&&document.getElementById('win-explorer')){
+    focusWin('explorer');restoreWin('explorer');
+    setTimeout(()=>{buildExpSidebar();renderExp();},10);
+    return;
+  }
+  createWindow('explorer','File Explorer','explorer',720,520,
+    `<div class="exp-toolbar">
+       <button class="exp-nav-btn" onclick="expNav('back')" title="Back"><div style="width:14px;height:14px">${ICONS.arrowLeft}</div></button>
+       <button class="exp-nav-btn" onclick="expNav('fwd')" title="Forward"><div style="width:14px;height:14px">${ICONS.arrowRight}</div></button>
+       <button class="exp-nav-btn" onclick="expNav('up')" title="Up one level"><div style="width:14px;height:14px">${ICONS.arrowUp}</div></button>
+       <input type="text" id="exp-path-input" value="${expCwd}" onkeydown="if(event.key==='Enter')expGo(this.value)">
+       <button class="exp-nav-btn" onclick="expGo(document.getElementById('exp-path-input').value)" title="Go"><div style="width:14px;height:14px">${ICONS.go}</div></button>
+     </div>
+     <div class="exp-main">
+       <div class="exp-sidebar" id="exp-sidebar"></div>
+       <div id="exp-files"></div>
+     </div>
+     <div class="exp-statusbar" id="exp-status">Ready</div>`,
+    ()=>{buildExpSidebar();renderExp();}
+  );
+}
+function buildExpSidebar(){
+  const sb=document.getElementById('exp-sidebar');if(!sb)return;
+  const items=[
+    {label:'This PC',  path:'/',          icon:'sidePC'},
+    {label:'Desktop',  path:'/Desktop',   icon:'sideDesktop'},
+    {label:'Documents',path:'/Documents', icon:'sideDocs'},
+    {label:'Downloads',path:'/Downloads', icon:'sideDown'},
+    {label:'Pictures', path:'/Pictures',  icon:'sidePics'},
+    {label:'System',   path:'/System',    icon:'sideSys'},
+  ];
+  let html='<div class="exp-side-section"><div class="exp-side-label">Quick Access</div>';
+  items.forEach(it=>{
+    html+=`<div class="exp-side-item${expCwd===it.path?' active':''}" onclick="expGo('${it.path}')">
+      <span class="esi-ico">${ICONS[it.icon]||''}</span>${it.label}
+    </div>`;
+  });
+  sb.innerHTML=html+'</div>';
+}
+function renderExp(){
+  const filesEl=document.getElementById('exp-files');
+  const pathEl=document.getElementById('exp-path-input');
+  const status=document.getElementById('exp-status');
+  if(!filesEl)return;
+  if(pathEl)pathEl.value=expCwd;
+  buildExpSidebar();
+  const items=listDir(expCwd);
+  if(!items){filesEl.innerHTML='<div style="color:var(--text-2);padding:20px;font-size:13px;">Cannot read directory.</div>';return;}
+  filesEl.innerHTML='';
+  // Sort: folders first
+  items.sort((a,b)=>{if(a.type===b.type)return a.name.localeCompare(b.name);return a.type==='dir'?-1:1;});
+  items.forEach(item=>{
+    const el=document.createElement('div');el.className='file-item';
+    const iconKey=item.type==='dir'?'folder':getFileIconKey(item.name);
+    el.innerHTML=`<div class="fi-ico">${ICONS[iconKey]||ICONS.fileText}</div><div class="fi-name">${item.name}</div>`;
+    el.ondblclick=()=>{
+      if(item.type==='dir')expGo((expCwd==='/'?'':expCwd)+'/'+item.name);
+      else{const p=(expCwd==='/'?'':expCwd)+'/'+item.name;const n=getNode(p);if(n)openApp('notepad',{file:p,content:n.content||''});}
+    };
+    el.oncontextmenu=(e)=>{
+      e.preventDefault();e.stopPropagation();
+      const p=(expCwd==='/'?'':expCwd)+'/'+item.name;
+      showCtx([
+        {icon:'notepad',label:'Open',      action:()=>{if(item.type==='dir')expGo(p);else{const n=getNode(p);openApp('notepad',{file:p,content:n?.content||''}); }}},
+        'sep',
+        {icon:'rename', label:'Rename',    action:()=>{const nn=prompt('New name:',item.name);if(nn){const n=getNode(p);if(n)item.type==='dir'?mkDir(p.replace(item.name,nn)):wFile(p.replace(item.name,nn),n.content||'');rmNode(p);renderExp();}}},
+        {icon:'trash',  label:'Delete',    action:()=>{if(confirm(`Delete "${item.name}"?`)){rmNode(p);renderExp();}}},
+      ],e.clientX,e.clientY);
+    };
+    filesEl.appendChild(el);
+  });
+  if(status)status.textContent=`${items.length} item${items.length!==1?'s':''}  —  ${expCwd}`;
+}
+function expGo(p){
+  if(!p)return;
+  const n=getNode(p);
+  if(!n)return;
+  if(n.type!=='dir'){openApp('notepad',{file:p,content:n.content||''});return;}
+  if(expHist[expHistIdx2]!==p){expHist=expHist.slice(0,expHistIdx2+1);expHist.push(p);expHistIdx2=expHist.length-1;}
+  expCwd=p;renderExp();
+}
+function expNav(dir){
+  if(dir==='back'&&expHistIdx2>0){expHistIdx2--;expCwd=expHist[expHistIdx2];renderExp();}
+  else if(dir==='fwd'&&expHistIdx2<expHist.length-1){expHistIdx2++;expCwd=expHist[expHistIdx2];renderExp();}
+  else if(dir==='up'){const p=expCwd.split('/').slice(0,-1).join('/')||'/';expGo(p);}
+}
+function getFileIconKey(name){
+  const ext=name.split('.').pop().toLowerCase();
+  const map={txt:'fileText',md:'fileText',log:'fileText',js:'fileCode',ts:'fileCode',html:'fileCode',css:'fileCode',json:'fileCode',py:'fileCode',sh:'fileCode',png:'fileImg',jpg:'fileImg',jpeg:'fileImg',gif:'fileImg',svg:'fileImg',webp:'fileImg'};
+  return map[ext]||'fileText';
+}
+
+// ═══════════════════════════════════════════
+//  BROWSER
+// ═══════════════════════════════════════════
+const PROXY_BASE='https://scramjet-backend-d0t8.onrender.com/';
+let activeBrUrl='https://google.com';
+
+function openBrowser(url){
+  if(url) activeBrUrl = url;
+  if(WINS['browser'] && document.getElementById('win-browser')){
+    focusWin('browser'); restoreWin('browser');
+    // Load new URL into existing iframe
+    const f = document.getElementById('br-iframe');
+    if(f) f.src = PROXY_BASE + '?url=' + encodeURIComponent(brNormalizeUrl(activeBrUrl));
+    return;
+  }
+  createWindow('browser','KatsuBrowser','browser',960,640,
+    `<div class="br-frame-wrap" style="position:relative;">
+       <iframe id="br-iframe" allow="*" allowfullscreen
+         sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals allow-downloads allow-top-navigation allow-top-navigation-by-user-activation allow-pointer-lock allow-storage-access-by-user-activation"
+       ></iframe>
+       <div id="br-loader" style="width:0;opacity:1"></div>
+       <div id="br-error-overlay" style="display:none;position:absolute;inset:0;background:var(--bg-primary);z-index:10;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;">
+         <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+           <circle cx="28" cy="28" r="26" stroke="var(--text-3)" stroke-width="2"/>
+           <line x1="28" y1="16" x2="28" y2="32" stroke="var(--text-3)" stroke-width="3" stroke-linecap="round"/>
+           <circle cx="28" cy="40" r="2.5" fill="var(--text-3)"/>
+         </svg>
+         <div id="br-error-title" style="font-size:20px;font-weight:700;color:var(--text-1);">This page couldn't be loaded</div>
+         <div id="br-error-msg" style="font-size:13px;color:var(--text-2);text-align:center;max-width:380px;line-height:1.6;"></div>
+         <div style="display:flex;gap:10px;margin-top:8px;">
+           <button onclick="brReload()" style="padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-1);font-family:var(--font-ui);font-size:13px;font-weight:500;cursor:pointer;">Try Again</button>
+           <button onclick="brHome()" style="padding:8px 18px;border-radius:8px;border:none;background:var(--accent2);color:#fff;font-family:var(--font-ui);font-size:13px;font-weight:500;cursor:pointer;">Go Home</button>
+         </div>
+       </div>
+     </div>`,
+    ()=>{ setTimeout(()=>brLoad(activeBrUrl), 150); }
+  );
+  window.addEventListener('message', brHandleMessage);
+}
+
+const BR_ERROR_PATTERNS = [
+  'there was an error loading',
+  "couldn't be loaded",
+  'net::err_',
+  'failed to fetch',
+  'restarting your server',
+  'verify the server',
+  'troubleshooting the error',
+  'error on the github',
+];
+
+function brHandleMessage(e){
+  if(!e.data) return;
+  const d = typeof e.data==='string' ? e.data : JSON.stringify(e.data);
+  if(BR_ERROR_PATTERNS.some(p=>d.toLowerCase().includes(p))) brShowError(activeBrUrl);
+}
+
+function brShowError(url){
+  const overlay = document.getElementById('br-error-overlay');
+  const msg     = document.getElementById('br-error-msg');
+  const iframe  = document.getElementById('br-iframe');
+  if(!overlay) return;
+  if(iframe) iframe.style.visibility = 'hidden';
+  const host = (()=>{ try{ return new URL(url).hostname; } catch(e){ return url; } })();
+  if(msg) msg.textContent = `KatsuBrowser couldn't load "${host}". The site may be unavailable, blocking access, or the address may be incorrect.`;
+  overlay.style.display = 'flex';
+}
+
+function brHideError(){
+  const overlay = document.getElementById('br-error-overlay');
+  const iframe  = document.getElementById('br-iframe');
+  if(overlay) overlay.style.display = 'none';
+  if(iframe)  iframe.style.visibility = 'visible';
+}
+
+function brNormalizeUrl(raw){
+  let url = raw.trim();
+  if(!url) return 'https://www.google.com';
+  if(!url.includes('.') && !url.startsWith('http'))
+    return 'https://www.google.com/search?q=' + encodeURIComponent(url);
+  if(!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+  return url;
+}
+
+function brLoad(raw){
+  const frame  = document.getElementById('br-iframe');
+  const loader = document.getElementById('br-loader');
+  if(!frame) return;
+  brHideError();
+  const url = brNormalizeUrl(raw);
+  activeBrUrl = url;
+  // Loader bar
+  if(loader){
+    loader.style.transition='none'; loader.style.width='0'; loader.style.opacity='1';
+    requestAnimationFrame(()=>{
+      loader.style.transition='width 0.6s ease'; loader.style.width='70%';
+      setTimeout(()=>{ loader.style.width='100%'; }, 700);
+      setTimeout(()=>{ loader.style.opacity='0'; }, 1200);
+      setTimeout(()=>{ loader.style.width='0'; loader.style.opacity='1'; loader.style.transition='none'; }, 1500);
+    });
+  }
+  const nav_ts = Date.now();
+  frame._navTs = nav_ts;
+  frame.onload = ()=>{
+    if(frame._navTs !== nav_ts) return;
+    try {
+      const title = frame.contentDocument?.title || '';
+      const body  = frame.contentDocument?.body?.innerText || '';
+      if(BR_ERROR_PATTERNS.some(p=>(title+' '+body).toLowerCase().includes(p))) brShowError(url);
+    } catch(_){}
+  };
+  frame.src = PROXY_BASE + '?url=' + encodeURIComponent(url);
+  // Update window title to just show KatsuBrowser (no URL)
+  const titleEl = document.querySelector('#win-browser .win-titlebar h3');
+  if(titleEl) titleEl.textContent = 'KatsuBrowser';
+}
+
+function brReload(){ brHideError(); const f=document.getElementById('br-iframe'); if(f) f.src=f.src; }
+function brHome(){ brLoad('https://google.com'); }
+
+
+// ═══════════════════════════════════════════
+//  NOTEPAD
+// ═══════════════════════════════════════════
+// notepad state is per-window via winId
+function openNotepad(file,content){
+  // Each file gets its own window ID so multiple files can be open
+  const winId = file ? 'notepad-'+file.replace(/[^a-zA-Z0-9]/g,'_') : 'notepad-new-'+(Date.now()%10000);
+  const title = file ? file.split('/').pop() : 'untitled.txt';
+  const safeContent = (content||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // If already open for this file, just focus
+  if(WINS[winId]&&document.getElementById('win-'+winId)){
+    focusWin(winId);restoreWin(winId);return;
+  }
+  const bodyHtml = `<div class="np-menubar">
+       <button class="np-menu-btn" onclick="npNew('${winId}')">New</button>
+       <button class="np-menu-btn" onclick="npSave('${winId}','${(file||'').replace(/'/g,"\\'")}')">Save</button>
+       <button class="np-menu-btn" onclick="npSaveAs('${winId}')">Save As…</button>
+       <button class="np-menu-btn" onclick="npWordWrapToggle('${winId}')">Word Wrap</button>
+     </div>
+     <textarea id="npta-${winId}" spellcheck="false">${safeContent}</textarea>`;
+  createWindow(winId,'Notepad — '+title,'notepad',620,420, bodyHtml,
+    ()=>{
+      const ta=document.getElementById('npta-'+winId);
+      if(ta){ta.focus();ta.style.flex='1';ta.style.background='transparent';ta.style.border='none';ta.style.outline='none';ta.style.padding='14px 16px';ta.style.color='var(--text-1)';ta.style.fontFamily='var(--font-mono)';ta.style.fontSize='13px';ta.style.resize='none';ta.style.lineHeight='1.7';}
+    }
+  );
+}
+function npWordWrapToggle(winId){
+  const ta=document.getElementById('npta-'+winId);if(!ta)return;
+  const on=ta.style.whiteSpace!=='pre';
+  ta.style.whiteSpace=on?'pre-wrap':'pre';
+  ta.style.overflowX=on?'hidden':'auto';
+}
+function npNew(winId){
+  const ta=document.getElementById('npta-'+winId);if(ta)ta.value='';
+  const h=document.querySelector('#win-'+winId+' .win-titlebar h3');
+  if(h)h.textContent='Notepad — untitled.txt';
+}
+function npSave(winId,filePath){
+  const ta=document.getElementById('npta-'+winId);if(!ta)return;
+  if(filePath){wFile(filePath,ta.value);showNotif('Notepad','Saved: '+filePath.split('/').pop());}
+  else npSaveAs(winId);
+}
+function npSaveAs(winId){
+  const ta=document.getElementById('npta-'+winId);if(!ta)return;
+  const nm=prompt('Save as:','untitled.txt');
+  if(!nm)return;
+  const fp='/Documents/'+nm;
+  wFile(fp,ta.value);
+  const h=document.querySelector('#win-'+winId+' .win-titlebar h3');
+  if(h)h.textContent='Notepad — '+nm;
+  showNotif('Notepad','Saved as '+nm);
+}
+
+// ═══════════════════════════════════════════
+//  SETTINGS
+// ═══════════════════════════════════════════
+function openSettings(tab='appearance'){
+  const body=buildSettingsHTML();
+  createWindow('settings','Settings','settings',620,500,body,()=>switchSettingsTab(tab));
+}
+
+function buildSettingsHTML(){
+  const navItems=[
+    {id:'appearance', label:'Appearance', iconKey:'settingsAppearance'},
+    {id:'display',    label:'Display',    iconKey:'settingsDisplay'},
+    {id:'fonts',      label:'Fonts',      iconKey:'settingsFonts'},
+    {id:'system',     label:'System',     iconKey:'settingsSystem'},
+  ];
+  let nav='<div class="settings-nav">';
+  navItems.forEach(n=>{
+    nav+=`<div class="sn-item" id="sn-${n.id}" onclick="switchSettingsTab('${n.id}')">
+      <span class="sni-ico">${ICONS[n.iconKey]||''}</span>${n.label}
+    </div>`;
+  });
+  nav+='</div>';
+
+  // Appearance tab
+  const themeSwatches=THEMES.map(t=>`<div class="theme-swatch${currentTheme===t.id?' sel':''}" id="sw-${t.id}" title="${t.label}" style="background:${t.swatch}" onclick="settingSetTheme('${t.id}')"></div>`).join('');
+
+  const wpGrid=WALLPAPERS.map((w,i)=>`<div class="wp-opt${currentWp===i?' sel':''}" id="wp-${i}" style="background:${w}" onclick="settingSetWp(${i})"></div>`).join('');
+
+  // Fonts tab
+  const fontOpts=FONTS.map(f=>`<button class="font-opt-btn${currentFont===f.id?' sel':''}" id="fo-${f.id}" style="font-family:${f.id==='inter'?'Inter':f.id==='space'?'Space Grotesk':f.id==='ibm'?'IBM Plex Sans':f.id==='outfit'?'Outfit':'Geist, system-ui'}" onclick="settingSetFont('${f.id}')"><strong>${f.label}</strong> <span style="opacity:0.6;font-size:11px">${f.sample}</span></button>`).join('');
+
+  const tabs=`
+    <div class="settings-content active" id="sc-appearance">
+      <div class="settings-section">
+        <h4>Color Theme</h4>
+        <div class="swatch-grid">${themeSwatches}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+          ${THEMES.map(t=>`<div style="font-size:11px;color:var(--text-2);cursor:pointer;padding:2px 8px;border-radius:12px;border:1px solid var(--border)" onclick="settingSetTheme('${t.id}')">${t.label}</div>`).join('')}
+        </div>
+      </div>
+      <div class="settings-section">
+        <h4>Wallpaper</h4>
+        <div class="wp-grid">${wpGrid}</div>
+      </div>
+    </div>
+    <div class="settings-content" id="sc-display">
+      <div class="settings-section">
+        <h4>Display Options</h4>
+        <div class="setting-row">
+          <div class="setting-desc"><label>Blur & Transparency</label><p>Enable backdrop blur effects</p></div>
+          <label class="toggle-pill"><input type="checkbox" checked onchange="settingToggleBlur(this.checked)"><div class="tp-track"></div><div class="tp-thumb"></div></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-desc"><label>Animations</label><p>Window open/close animations</p></div>
+          <label class="toggle-pill"><input type="checkbox" checked onchange="settingToggleAnim(this.checked)"><div class="tp-track"></div><div class="tp-thumb"></div></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-desc"><label>Window Rounding</label><p>Border radius for windows</p></div>
+          <input type="range" class="os-slider" min="0" max="20" value="10" style="width:130px" oninput="settingSetRadius(this.value)">
+        </div>
+        <div class="setting-row">
+          <div class="setting-desc"><label>UI Scale</label><p>Scale factor for all elements</p></div>
+          <select class="os-select" onchange="settingSetScale(this.value)">
+            <option value="0.9">90%</option>
+            <option value="1" selected>100%</option>
+            <option value="1.1">110%</option>
+            <option value="1.2">120%</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="settings-content" id="sc-fonts">
+      <div class="settings-section">
+        <h4>Interface Font</h4>
+        <p style="font-size:12px;color:var(--text-2);margin-bottom:12px">Choose the font used across all UI elements.</p>
+        <div class="font-option-grid">${fontOpts}</div>
+      </div>
+      <div class="settings-section" style="margin-top:20px">
+        <h4>Font Preview</h4>
+        <div id="font-preview" style="padding:16px;background:var(--bg-tertiary);border-radius:10px;border:1px solid var(--border);font-family:var(--font-ui);">
+          <div style="font-size:22px;font-weight:700;color:var(--text-1);margin-bottom:6px">The quick brown fox</div>
+          <div style="font-size:14px;color:var(--text-2)">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+          <div style="font-size:14px;color:var(--text-2)">abcdefghijklmnopqrstuvwxyz</div>
+          <div style="font-size:14px;color:var(--text-2)">0123456789 !@#$%^&*()</div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-content" id="sc-system">
+      <div class="settings-section">
+        <h4>System Information</h4>
+        <table style="width:100%;font-size:13px;border-collapse:collapse;">
+          ${[['OS','Solus OS v1.0'],['Kernel','Solus Kernel 5.0'],['Architecture','x86_64 (virtual)'],['RAM','4096 MB'],['Browser','KatsuBrowser 1.0'],['Active Theme',currentTheme],['Active Font',currentFont]].map(([k,v])=>`<tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 0;color:var(--text-2);width:140px">${k}</td><td style="color:var(--text-1);font-weight:500">${v}</td></tr>`).join('')}
+        </table>
+      </div>
+    </div>
+
+  `;
+  return `<div class="settings-layout">${nav}<div id="settings-panels" style="flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column;min-height:0;">${tabs}</div></div>`;
+}
+
+function switchSettingsTab(id){
+  document.querySelectorAll('.sn-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.settings-content').forEach(p=>p.classList.remove('active'));
+  const nav=document.getElementById('sn-'+id);if(nav)nav.classList.add('active');
+  const panel=document.getElementById('sc-'+id);if(panel)panel.classList.add('active');
+}
+
+function settingSetTheme(id){
+  applyTheme(id);
+  document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('sel'));
+  const sw=document.getElementById('sw-'+id);if(sw)sw.classList.add('sel');
+  showNotif('Appearance','Theme changed to '+THEMES.find(t=>t.id===id)?.label);
+}
+function settingSetFont(id){
+  applyFont(id);
+  document.querySelectorAll('.font-opt-btn').forEach(b=>b.classList.remove('sel'));
+  const btn=document.getElementById('fo-'+id);if(btn)btn.classList.add('sel');
+  showNotif('Fonts','Font changed to '+FONTS.find(f=>f.id===id)?.label);
+}
+function settingSetWp(idx){
+  applyWallpaper(idx);
+  document.querySelectorAll('.wp-opt').forEach(w=>w.classList.remove('sel'));
+  const w=document.getElementById('wp-'+idx);if(w)w.classList.add('sel');
+}
+function settingSetRadius(v){document.documentElement.style.setProperty('--radius',v+'px');}
+function settingSetScale(v){document.documentElement.style.setProperty('font-size',parseFloat(v)*16+'px');}
+function settingToggleBlur(on){
+  document.querySelectorAll('#taskbar,#start-menu,.ctx-menu').forEach(el=>{
+    el.style.backdropFilter=on?'blur(24px)':'none';
+  });
+}
+function settingToggleAnim(on){
+  const style=document.getElementById('anim-toggle-style')||document.createElement('style');
+  style.id='anim-toggle-style';
+  style.textContent=on?'':'.solus-win{animation:none!important;}';
+  document.head.appendChild(style);
+}
+
+// ═══════════════════════════════════════════
+//  ABOUT
+// ═══════════════════════════════════════════
+function openAbout(){
+  createWindow('about','About Solus OS','about',400,380,
+    `<div class="about-body">
+      <svg class="about-logo" viewBox="0 0 72 72" fill="none">
+        <circle cx="36" cy="36" r="32" fill="var(--accent2)" opacity="0.2" stroke="var(--accent)" stroke-width="1.5"/>
+        <circle cx="36" cy="36" r="20" fill="var(--accent)" opacity="0.3"/>
+        <circle cx="36" cy="36" r="10" fill="var(--accent)" opacity="0.9"/>
+        <circle cx="36" cy="36" r="4.5" fill="var(--win-chrome,#0d1117)"/>
+        <line x1="36" y1="4" x2="36" y2="16" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="36" y1="56" x2="36" y2="68" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="4" y1="36" x2="16" y2="36" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="56" y1="36" x2="68" y2="36" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="13" y1="13" x2="21" y2="21" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="51" y1="51" x2="59" y2="59" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="59" y1="13" x2="51" y2="21" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="13" y1="59" x2="21" y2="51" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+      </svg>
+      <h2>Solus OS</h2>
+      <div class="about-ver">Version 1.0  ·  Build 2025.01</div>
+      <p>A fully-featured browser-based OS simulator with customizable themes, fonts, file management, terminal, and integrated web browsing.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <span class="about-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="var(--accent)" stroke-width="1.4"/></svg>Solus Kernel 5.0</span>
+        <span class="about-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zm0 0v12M2 8h12" stroke="var(--accent)" stroke-width="1.4"/></svg>Web Proxy</span>
+        <span class="about-badge"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="var(--accent)" stroke-width="1.4"/></svg>Virtual FS</span>
+      </div>
+      <div class="about-actions">
+        <button class="about-btn primary" onclick="openApp('browser')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><ellipse cx="12" cy="12" rx="4" ry="9" stroke="currentColor" stroke-width="1.3"/></svg>
+          Open Browser
+        </button>
+        <button class="about-btn" onclick="openApp('terminal')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M6 8l4 4-4 4M12 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Terminal
+        </button>
+        <button class="about-btn" onclick="openApp('settings')">
+          <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M11 2v3M11 17v3M2 11h3M17 11h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Settings
+        </button>
+      </div>
+    </div>`
+  );
+}
+
+// ═══════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════
+buildStartMenu();
+buildDesktopIcons();
+applyTheme('blue');
+applyFont('inter');
+
+setTimeout(()=>{
+  showNotif('Solus OS','Welcome! Double-click icons to open apps.');
+  openAbout();
+},400);
+</script>
+</body>
+</html>
